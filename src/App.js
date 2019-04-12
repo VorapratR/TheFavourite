@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import firebase from 'firebase';
+import {DB_CONFIG} from './Config';
 
 class App extends Component {
+  constructor(){
+    super()
+    this.app = firebase.initializeApp(DB_CONFIG);
+    this.database = this.app.database().ref().child('speed')
+    this.state ={
+      speed:0
+    }
+  }
+  componentDidMount() {
+    this.database.on('value',snap => {
+      this.setState({
+        speed: snap.val()
+      })
+    })
+  }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h1>this {this.state.speed}</h1> 
       </div>
     );
   }

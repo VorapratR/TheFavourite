@@ -21,7 +21,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>this {this.state.speed}</h1> 
+        <h1>this is {this.state.speed}</h1> 
       </div>
     );
   }

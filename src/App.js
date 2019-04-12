@@ -1,30 +1,45 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
-import {DB_CONFIG} from './Config';
+import './App.css';
+import * as firebase from 'firebase';
+var config = {
+  /*apiKey: "AIzaSyALI99GmjUB8D54YFKChBvrShrnb7yYT7I",
+  authDomain: "react-chapter8.firebaseapp.com",
+  databaseURL: "https://react-chapter8.firebaseio.com",
+  projectId: "react-chapter8",
+  storageBucket: "react-chapter8.appspot.com",
+  messagingSenderId: "228016244388"*/
+  apiKey: "AIzaSyDwnC6OllHNAtBq9nrSdyYmtZl0h-R5jlQ",
+  authDomain: "moviefav-9bede.firebaseapp.com",
+  databaseURL: "https://moviefav-9bede.firebaseio.com",
+  projectId: "moviefav-9bede",
+  storageBucket: "moviefav-9bede.appspot.com",
+  messagingSenderId: "1087624178600"
+};
+firebase.initializeApp(config);
+
+var db=firebase.database();
 
 class App extends Component {
-  constructor(){
-    super()
-    this.app = firebase.initializeApp(DB_CONFIG);
-    this.database = this.app.database().ref().child('speed')
-    this.state ={
-      speed:0
-    }
-  }
-  componentDidMount() {
-    this.database.on('value',snap => {
-      this.setState({
-        speed: snap.val()
-      })
-    })
+  state = {movie:[
+    {id : '36382', rank:'0' ,title : 'batman'}
+  ]}
+  componentDidMount(){
+    db.ref('/TopRated').on('value',snapshot => {
+      let val = snapshot.val();
+      this.setState({movie:val})
+    });
   }
   render() {
     return (
-      <div className="App">
-        <h1>this is {this.state.speed}</h1> 
-      </div>
+
+      <div>
+        {this.state.movie.map(obj => <div>{obj.rank} {obj.title}</div>)} 
+      </div> 
     );
   }
 }
+
+
+
 
 export default App;

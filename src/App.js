@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import MovieList from './components/MovieList';
 import MovieBox from './components/MovieBox';
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import * as firebase from 'firebase';
 var config = {
   apiKey: "AIzaSyDwnC6OllHNAtBq9nrSdyYmtZl0h-R5jlQ",
@@ -17,11 +18,24 @@ class App extends Component {
   state = {movie:[
     {id : '36382', rank:'0' ,title : 'batman'}
   ]}
+  uiConfig = {
+    signInFlow: "popup",
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    ],
+    callbacks: {
+      signInSuccess: () => false
+    }
+  }
   componentDidMount(){
     db.ref('/TopRated').on('value',snapshot => {
       let val = snapshot.val();
       this.setState({movie:val})
     });
+    firebase.auth().onAuthStateChanged(user => {
+      this.setState({ isSignedIn: !!user })
+      console.log("user", user)
+    })
   }
   render() {
     return (
@@ -53,6 +67,24 @@ class App extends Component {
           </div>
           <div className="column is-6">
             <MovieBox db={firebase} />
+          </div>
+          <div className="column is-6">
+              {this.state.isSignedIn ? (
+              <span>
+                <div>Signed In!</div>
+                <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
+                <h1>Welcome {firebase.auth().currentUser.displayName}</h1>
+                <img
+                  alt="profile picture"
+                  src={firebase.auth().currentUser.photoURL}
+                />
+              </span>
+            ) : (
+              <StyledFirebaseAuth
+                uiConfig={this.uiConfig}
+                firebaseAuth={firebase.auth()}
+              />
+            )}
           </div>
         </div>
       </div>

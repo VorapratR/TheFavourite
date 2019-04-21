@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Card from "../src/components/Card";
 import * as firebase from 'firebase';
 var config = {
   apiKey: "AIzaSyDwnC6OllHNAtBq9nrSdyYmtZl0h-R5jlQ",
@@ -10,10 +11,7 @@ var config = {
   messagingSenderId: "1087624178600"
 };
 firebase.initializeApp(config);
-
 var db=firebase.database();
-
-
 class App extends Component {
   state = {movie:[
     {id : '36382', rank:'0' ,title : 'batman'}
@@ -26,30 +24,32 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="container">
-      <div className="columns">
-        <div className="column is-3"></div> 
-        
-        <div className="column is-6">
-        <strong>Top Movie List</strong> 
-        {this.state.movie.map(obj => <div>{obj.rank} {obj.title}</div>)} 
-         
+      <div cclass="container">
+        <div className="columns">
+              
         </div>
-      </div>
-      <div className="columns">
-        <div className="column is-3"></div>
-        <div className="column is-6">
-    
+        <div class="row">
+          <div class="col" >
+            <div >
+              <strong>Top Movie List</strong> 
+              {this.state.movie.map(obj => 
+                <div class="card">
+                  <div class="card-body">
+                  </div>
+                    <p class="card-text"> 
+                        {obj.rank} {obj.title}      <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </p>
+                </div>
+              )}>   
+            </div>
+        </div>
+        <div class="col" >
+          <Card/>
         </div>
       </div>
     </div>
-
-
+      
     );
   }
 }
-
-
-
-
 export default App;

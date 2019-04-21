@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import Card from "../src/components/Card";
+import MovieList from './components/MovieList';
+import MovieBox from './components/MovieBox';
 import * as firebase from 'firebase';
 var config = {
   apiKey: "AIzaSyDwnC6OllHNAtBq9nrSdyYmtZl0h-R5jlQ",
@@ -31,20 +32,28 @@ class App extends Component {
         <div class="row">
           <div class="col" >
             <div >
-              <strong>Top Movie List</strong> 
+              <strong>Top Movie Lists</strong> 
               {this.state.movie.map(obj => 
                 <div class="card">
                   <div class="card-body">
                   </div>
                     <p class="card-text"> 
-                        {obj.rank} {obj.title}      <a href="#" class="btn btn-primary">Go somewhere</a>
+                        {obj.rank} {obj.title}      
+                        {/* <a href="#" class="btn btn-primary">Go somewhere</a> */}
                     </p>
                 </div>
               )}>   
             </div>
         </div>
+       
         <div class="col" >
-          <Card/>
+          <strong> Favourite Movie List</strong> 
+          <div className="column is-6">
+            <MovieList db={firebase} />
+          </div>
+          <div className="column is-6">
+            <MovieBox db={firebase} />
+          </div>
         </div>
       </div>
     </div>
